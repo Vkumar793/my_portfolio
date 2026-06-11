@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vivek Kumar — Salesforce QA Automation Engineer</title>
+<meta name="description" content="Portfolio of Vivek Kumar — Salesforce QA Automation Engineer specializing in Copado Robotic Testing, GCP ETL Testing, and CI/CD-enabled test frameworks.">
+<meta name="keywords" content="Salesforce QA, Copado Robotic Testing, Automation Engineer, GCP ETL, BigQuery, Vivek Kumar">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --charcoal: #1C1C1E;
+    --charcoal-light: #2A2A2E;
+    --amber: #E8A020;
+    --amber-dim: #C4851A;
+    --amber-pale: #FAC75510;
+    --amber-glow: rgba(232,160,32,0.35);
+    --slate: #3B4A6B;
+    --slate-light: #4E5F84;
+    --cream: #F5F2EC;
+    --cream-dark: #EAE5D8;
+    --text-primary: #1C1C1E;
+    --text-secondary: #5A5A6B;
+    --text-muted: #8A8A9A;
+    --white: #FFFFFF;
+    --card-bg: #FFFFFF;
+    --border: #E2DDD2;
+    --section-pad: 100px 0;
+    --transition-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--cream); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden;
+  }
+
+  /* SCROLL PROGRESS BAR */
+  .scroll-progress {
+    position: fixed; top: 0; left: 0; height: 3px; z-index: 1001;
+    background: linear-gradient(90deg, var(--amber), #F0C060, var(--amber));
+    width: 0%; transition: width 0.1s linear;
+    box-shadow: 0 0 10px var(--amber-glow);
+  }
+
+  /* CUSTOM CURSOR GLOW */
+  .cursor-glow {
+    position: fixed; width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.04) 0%, transparent 70%);
+    pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+    transition: opacity 0.3s;
+    display: none;
+  }
+  @media (hover: hover) { .cursor-glow { display: block; } }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    background: rgba(28,28,30,0.88); backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    padding: 0 5%; height: 64px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(232,160,32,0.15);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(28,28,30,0.96);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+  }
+  .nav-logo {
+    font-size: 22px; font-weight: 700; color: var(--amber);
+    letter-spacing: 1px; position: relative;
+    text-decoration: none;
+  }
+  .nav-logo::after {
+    content: ''; position: absolute; bottom: -2px; left: 0;
+    width: 100%; height: 2px; background: var(--amber);
+    transform: scaleX(0); transform-origin: right;
+    transition: transform 0.3s var(--transition-smooth);
+  }
+  .nav-logo:hover::after { transform: scaleX(1); transform-origin: left; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.65); text-decoration: none;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
+    transition: color 0.3s, transform 0.2s; position: relative;
+    padding: 4px 0;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0;
+    width: 0; height: 1.5px; background: var(--amber);
+    transition: width 0.3s var(--transition-smooth);
+  }
+  .nav-links a:hover { color: var(--amber); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a.active { color: var(--amber); }
+  .nav-links a.active::after { width: 100%; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; background: none; border: none; padding: 8px; }
+  .hamburger span { width: 24px; height: 2px; background: var(--amber); transition: 0.3s; display: block; }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  /* HERO */
+  #landing {
+    min-height: 100vh; background: var(--charcoal);
+    display: flex; align-items: center; padding: 100px 5% 60px;
+    position: relative; overflow: hidden;
+  }
+  /* Animated gradient orbs */
+  .hero-orb {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    filter: blur(80px); opacity: 0.5;
+    animation: orbFloat 12s ease-in-out infinite alternate;
+  }
+  .hero-orb-1 {
+    top: -150px; right: -100px; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,160,32,0.12) 0%, transparent 70%);
+    animation-duration: 14s;
+  }
+  .hero-orb-2 {
+    bottom: -120px; left: -80px; width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(59,74,107,0.2) 0%, transparent 70%);
+    animation-duration: 10s; animation-delay: -5s;
+  }
+  .hero-orb-3 {
+    top: 40%; left: 50%; width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(232,160,32,0.06) 0%, transparent 70%);
+    animation-duration: 16s; animation-delay: -8s;
+  }
+  @keyframes orbFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 15px) scale(0.95); }
+    100% { transform: translate(15px, -30px) scale(1.02); }
+  }
+  /* Grid pattern overlay */
+  .hero-grid-pattern {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 60% 60% at 30% 50%, black, transparent);
+    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 30% 50%, black, transparent);
+  }
+  /* Floating particles */
+  .particle {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    background: var(--amber); opacity: 0;
+    animation: particleDrift linear infinite;
+  }
+  @keyframes particleDrift {
+    0% { opacity: 0; transform: translateY(0) translateX(0); }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { opacity: 0; transform: translateY(-100vh) translateX(40px); }
+  }
+  .hero-inner { max-width: 820px; position: relative; z-index: 2; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(232,160,32,0.1); border: 1px solid rgba(232,160,32,0.25);
+    color: var(--amber); font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+    padding: 8px 18px; border-radius: 100px; text-transform: uppercase;
+    margin-bottom: 28px; opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+    backdrop-filter: blur(10px);
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 12px var(--amber-glow);
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 12px var(--amber-glow)} 50%{opacity:0.4;transform:scale(0.6);box-shadow:0 0 4px var(--amber-glow)} }
+  h1.hero-name {
+    font-size: clamp(44px, 7vw, 80px); font-weight: 700; color: var(--white);
+    line-height: 1.05; letter-spacing: -2.5px; margin-bottom: 18px;
+    opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+  }
+  h1.hero-name span {
+    color: var(--amber);
+    background: linear-gradient(135deg, var(--amber), #F0C060);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-titles {
+    font-size: clamp(14px, 2vw, 17px); color: rgba(255,255,255,0.5);
+    font-weight: 400; margin-bottom: 32px; letter-spacing: 0.3px;
+    opacity: 0; animation: fadeUp 0.7s 0.6s forwards;
+  }
+  .hero-titles .separator {
+    display: inline-block; width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.3); vertical-align: middle; margin: 0 12px;
+  }
+  .hero-intro {
+    font-size: clamp(15px, 1.8vw, 17px); color: rgba(255,255,255,0.7);
+    max-width: 640px; line-height: 1.8; margin-bottom: 44px;
+    opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+  }
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 48px; opacity: 0; animation: fadeUp 0.7s 1s forwards; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--amber), #D4911A);
+    color: var(--charcoal); font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 14px; padding: 15px 32px; border-radius: 10px;
+    border: none; cursor: pointer; letter-spacing: 0.3px; text-decoration: none;
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(232,160,32,0.4); }
+  .btn-primary:hover::before { left: 100%; }
+  .btn-outline {
+    background: transparent; color: var(--white); font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600; font-size: 14px; padding: 14px 32px; border-radius: 10px;
+    border: 1.5px solid rgba(255,255,255,0.25); cursor: pointer; letter-spacing: 0.3px;
+    text-decoration: none; transition: all 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--amber); color: var(--amber); background: rgba(232,160,32,0.06); }
+  .hero-socials { display: flex; gap: 16px; opacity: 0; animation: fadeUp 0.7s 1.2s forwards; }
+  .social-icon {
+    width: 46px; height: 46px; border-radius: 12px;
+    border: 1.5px solid rgba(255,255,255,0.15); display: flex; align-items: center;
+    justify-content: center; color: rgba(255,255,255,0.5); text-decoration: none;
+    transition: all 0.3s; font-size: 18px;
+    background: rgba(255,255,255,0.03);
+  }
+  .social-icon:hover {
+    border-color: var(--amber); color: var(--amber);
+    transform: translateY(-4px); box-shadow: 0 8px 24px rgba(232,160,32,0.2);
+    background: rgba(232,160,32,0.08);
+  }
+  .hero-scroll-hint {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    color: rgba(255,255,255,0.25); font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    opacity: 0; animation: fadeIn 1s 2s forwards;
+  }
+  .scroll-mouse {
+    width: 22px; height: 34px; border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 12px; position: relative;
+  }
+  .scroll-mouse::before {
+    content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    width: 3px; height: 8px; background: var(--amber); border-radius: 2px;
+    animation: scrollDot 2s infinite;
+  }
+  @keyframes scrollDot { 0%{opacity:1;transform:translateX(-50%) translateY(0)} 100%{opacity:0;transform:translateX(-50%) translateY(14px)} }
+
+  /* SECTION SHARED */
+  section { padding: var(--section-pad); }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 12px; display: inline-block;
+    position: relative;
+  }
+  .section-label::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1.5px; background: var(--amber);
+    transition: width 0.6s var(--transition-smooth);
+  }
+  .section-label.visible::after { width: 100%; }
+  .section-title {
+    font-size: clamp(28px, 4.5vw, 44px); font-weight: 700;
+    color: var(--text-primary); line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 16px;
+  }
+  .section-title .amber {
+    color: var(--amber);
+    background: linear-gradient(135deg, var(--amber), #D49520);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-sub { font-size: 17px; color: var(--text-secondary); max-width: 560px; line-height: 1.65; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 5%; }
+  .divider {
+    width: 48px; height: 3px; border-radius: 2px; margin-bottom: 40px; position: relative;
+    background: linear-gradient(90deg, var(--amber), #F0C060);
+  }
+  .divider::after {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--amber), #F0C060);
+    filter: blur(6px); opacity: 0.5;
+  }
+
+  /* REVEAL ANIMATION BASE */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s var(--transition-smooth), transform 0.7s var(--transition-smooth); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s var(--transition-smooth), transform 0.7s var(--transition-smooth); }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s var(--transition-smooth), transform 0.7s var(--transition-smooth); }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+  .reveal-scale { opacity: 0; transform: scale(0.88); transition: opacity 0.6s var(--transition-smooth), transform 0.6s var(--transition-smooth); }
+  .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+  /* ABOUT */
+  #about { background: var(--white); position: relative; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px; align-items: start; }
+  .about-avatar-block { position: relative; }
+  .avatar-ring {
+    width: 100%; max-width: 320px;
+    aspect-ratio: 1; border-radius: 20px; background: var(--charcoal);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    border: 2px solid rgba(232,160,32,0.25);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .avatar-ring:hover {
+    border-color: rgba(232,160,32,0.5);
+    box-shadow: 0 20px 60px rgba(232,160,32,0.15);
+  }
+  .avatar-ring::before {
+    content: ''; position: absolute; inset: -2px;
+    background: conic-gradient(from 0deg, transparent, var(--amber), transparent, var(--amber), transparent);
+    border-radius: 22px; z-index: -1; opacity: 0;
+    animation: ringRotate 4s linear infinite;
+    transition: opacity 0.3s;
+  }
+  .avatar-ring:hover::before { opacity: 0.3; }
+  @keyframes ringRotate { to { transform: rotate(360deg); } }
+  .avatar-initials {
+    font-size: 80px; font-weight: 700; color: var(--amber);
+    letter-spacing: -3px; font-family: 'DM Mono', monospace;
+    background: linear-gradient(135deg, var(--amber), #F0C060);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .avatar-tag {
+    position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--amber), #D4911A);
+    color: var(--charcoal); font-size: 12px; font-weight: 700;
+    padding: 8px 22px; border-radius: 100px; white-space: nowrap; letter-spacing: 0.5px;
+    box-shadow: 0 6px 20px rgba(232,160,32,0.3);
+  }
+  .about-mv { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
+  .mv-card {
+    background: var(--cream); border-radius: 14px; padding: 24px;
+    border-left: 3px solid var(--amber);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .mv-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(28,28,30,0.06); }
+  .mv-card h4 { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+  .mv-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  .about-text p { font-size: 16px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 18px; }
+  .about-stats { display: flex; gap: 40px; margin: 36px 0; flex-wrap: wrap; }
+  .stat { text-align: left; }
+  .stat-num {
+    font-size: 38px; font-weight: 700; color: var(--charcoal);
+    line-height: 1; font-family: 'DM Mono', monospace;
+  }
+  .stat-num span {
+    background: linear-gradient(135deg, var(--amber), #D49520);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 6px; letter-spacing: 0.5px; }
+  .about-nav-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; }
+  .pill-link {
+    padding: 10px 22px; border-radius: 100px; font-size: 13px; font-weight: 600;
+    border: 1.5px solid var(--border); color: var(--text-secondary);
+    text-decoration: none; transition: all 0.3s; letter-spacing: 0.3px;
+  }
+  .pill-link:hover { border-color: var(--amber); color: var(--amber); background: rgba(232,160,32,0.06); transform: translateY(-2px); }
+
+  /* EXPERIENCE */
+  #experience { background: var(--cream); }
+  .exp-card {
+    background: var(--white); border-radius: 18px; overflow: hidden;
+    border: 1px solid var(--border); margin-bottom: 36px;
+    display: grid; grid-template-columns: 290px 1fr;
+    transition: transform 0.4s var(--transition-smooth), box-shadow 0.4s var(--transition-smooth);
+  }
+  .exp-card:hover { transform: translateY(-6px); box-shadow: 0 24px 64px rgba(28,28,30,0.12); }
+  .exp-left {
+    background: var(--charcoal); padding: 40px 30px; display: flex;
+    flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .exp-left::before {
+    content: ''; position: absolute; top: -50%; right: -50%;
+    width: 200%; height: 200%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .exp-company { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .exp-role { font-size: 14px; color: rgba(255,255,255,0.55); margin-bottom: 20px; line-height: 1.4; }
+  .exp-badge {
+    display: inline-block; background: rgba(232,160,32,0.12); color: var(--amber);
+    font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 100px; border: 1px solid rgba(232,160,32,0.25); margin-bottom: 16px;
+  }
+  .exp-meta { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.5px; line-height: 1.9; }
+  .exp-right { padding: 40px 44px; }
+  .exp-project-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 16px; display: block;
+  }
+  .exp-right h3 { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
+  .exp-bullets { list-style: none; margin-bottom: 28px; }
+  .exp-bullets li {
+    font-size: 14px; color: var(--text-secondary); line-height: 1.7;
+    padding: 8px 0 8px 22px; position: relative;
+    border-bottom: 1px solid var(--cream-dark);
+    transition: transform 0.2s, background 0.2s;
+  }
+  .exp-bullets li:hover { transform: translateX(4px); }
+  .exp-bullets li::before {
+    content: ''; position: absolute; left: 0; top: 16px;
+    width: 8px; height: 2px; background: var(--amber);
+    transition: width 0.3s;
+  }
+  .exp-bullets li:hover::before { width: 12px; }
+  .exp-achievements h4 { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+  .achievement-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--cream); border-radius: 10px; padding: 14px 18px; margin-bottom: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid transparent;
+  }
+  .achievement-item:hover { transform: translateX(4px); border-color: rgba(232,160,32,0.2); box-shadow: 0 4px 16px rgba(232,160,32,0.08); }
+  .achievement-num { font-size: 24px; font-weight: 700; color: var(--amber); font-family: 'DM Mono', monospace; min-width: 56px; }
+  .achievement-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* EDUCATION */
+  #education { background: var(--white); }
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+  .edu-card {
+    background: var(--cream); border-radius: 18px; padding: 40px; border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: transform 0.4s var(--transition-smooth), box-shadow 0.4s var(--transition-smooth);
+  }
+  .edu-card:hover { transform: translateY(-6px); box-shadow: 0 20px 56px rgba(28,28,30,0.1); }
+  .edu-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--amber), #F0C060, var(--amber));
+    background-size: 200% 100%;
+    animation: shimmerBar 3s linear infinite;
+  }
+  @keyframes shimmerBar { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  .edu-icon { font-size: 40px; margin-bottom: 22px; }
+  .edu-degree { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3; }
+  .edu-institute { font-size: 14px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.4; }
+  .edu-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+  .edu-pill {
+    font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 100px;
+    background: var(--white); border: 1px solid var(--border); color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+  .edu-pill:hover { transform: scale(1.05); }
+  .edu-pill.gold { background: rgba(232,160,32,0.1); border-color: rgba(232,160,32,0.25); color: var(--amber-dim); }
+  .edu-highlights { list-style: none; }
+  .edu-highlights li {
+    font-size: 14px; color: var(--text-secondary); padding: 6px 0 6px 20px;
+    position: relative; line-height: 1.6;
+  }
+  .edu-highlights li::before { content: '◆'; position: absolute; left: 0; color: var(--amber); font-size: 8px; top: 10px; }
+
+  /* PROJECTS */
+  #projects { background: var(--cream); }
+  .proj-card {
+    background: var(--white); border-radius: 18px; overflow: hidden;
+    display: grid; grid-template-columns: 240px 1fr;
+    border: 1px solid var(--border); margin-bottom: 36px;
+    transition: transform 0.4s var(--transition-smooth), box-shadow 0.4s var(--transition-smooth);
+  }
+  .proj-card:hover { transform: translateY(-6px); box-shadow: 0 24px 64px rgba(28,28,30,0.12); }
+  .proj-left {
+    background: var(--slate); padding: 40px 28px; display: flex;
+    flex-direction: column; justify-content: center; gap: 16px;
+    transition: background 0.4s; position: relative; overflow: hidden;
+  }
+  .proj-left::after {
+    content: ''; position: absolute; bottom: -30%; right: -30%;
+    width: 150%; height: 150%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .proj-card:hover .proj-left { background: #2D3A55; }
+  .proj-num {
+    font-size: 72px; font-weight: 700;
+    color: rgba(255,255,255,0.06); font-family: 'DM Mono', monospace; line-height: 1;
+    transition: color 0.3s;
+  }
+  .proj-card:hover .proj-num { color: rgba(255,255,255,0.1); }
+  .proj-type { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .proj-duration { font-size: 12px; color: rgba(255,255,255,0.35); }
+  .proj-right { padding: 40px 44px; }
+  .proj-right h3 { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 14px; }
+  .proj-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 24px; }
+  .proj-outcomes { list-style: none; margin-bottom: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .proj-outcome {
+    background: var(--cream); border-radius: 10px; padding: 14px 16px;
+    font-size: 13px; color: var(--text-secondary); line-height: 1.5;
+    border-left: 3px solid var(--amber);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .proj-outcome:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+  .tech-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tech-pill {
+    font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 100px;
+    background: rgba(59,74,107,0.06); color: var(--slate); border: 1px solid rgba(59,74,107,0.15);
+    font-family: 'DM Mono', monospace; transition: all 0.2s;
+  }
+  .tech-pill:hover { background: rgba(59,74,107,0.12); transform: translateY(-1px); }
+
+  /* SKILLS */
+  #skills { background: var(--white); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 48px; }
+  .skill-card {
+    background: var(--cream); border-radius: 18px; padding: 34px; border: 1px solid var(--border);
+    transition: transform 0.4s var(--transition-smooth), box-shadow 0.4s var(--transition-smooth);
+  }
+  .skill-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(28,28,30,0.08); }
+  .skill-cat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+  .skill-cat-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--charcoal); display: flex; align-items: center; justify-content: center;
+    font-size: 20px; transition: transform 0.3s;
+  }
+  .skill-card:hover .skill-cat-icon { transform: rotate(-5deg) scale(1.05); }
+  .skill-cat-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+  .skill-row { margin-bottom: 20px; }
+  .skill-row-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .skill-name { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+  .skill-pct { font-size: 13px; font-weight: 700; color: var(--amber); font-family: 'DM Mono', monospace; }
+  .skill-bar { height: 6px; background: var(--cream-dark); border-radius: 3px; overflow: hidden; position: relative; }
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--slate-light), var(--amber), #F0C060);
+    background-size: 200% 100%;
+    border-radius: 3px; width: 0;
+    transition: width 1.4s var(--transition-smooth);
+    position: relative;
+  }
+  .skill-fill.animated { animation: skillShimmer 2s 1.4s infinite; }
+  @keyframes skillShimmer { 0%{background-position:200% 0} 50%{background-position:-200% 0} 100%{background-position:200% 0} }
+
+  /* CERTS */
+  #certifications { background: var(--cream); }
+  .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 48px; }
+  .cert-card {
+    background: var(--white); border-radius: 18px; padding: 36px 28px; border: 1px solid var(--border);
+    text-align: center;
+    transition: transform 0.4s var(--transition-smooth), box-shadow 0.4s var(--transition-smooth);
+    position: relative; overflow: hidden;
+  }
+  .cert-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .cert-card:hover::before { opacity: 1; }
+  .cert-card:hover { transform: translateY(-8px) rotate(0.5deg); box-shadow: 0 24px 56px rgba(28,28,30,0.12); }
+  .cert-icon-wrap {
+    width: 64px; height: 64px; border-radius: 16px; margin: 0 auto 22px;
+    display: flex; align-items: center; justify-content: center; font-size: 30px;
+    transition: transform 0.3s;
+  }
+  .cert-card:hover .cert-icon-wrap { transform: scale(1.1) rotate(-3deg); }
+  .cert-icon-wrap.copado { background: rgba(232,160,32,0.12); }
+  .cert-icon-wrap.google { background: rgba(59,74,107,0.08); }
+  .cert-icon-wrap.infosys { background: rgba(28,28,30,0.05); }
+  .cert-icon-wrap.salesforce { background: rgba(0, 112, 210, 0.08); }
+  .cert-name { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; line-height: 1.35; }
+  .cert-provider { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 18px; }
+  .cert-badge {
+    display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; padding: 5px 14px; border-radius: 100px;
+  }
+  .cert-badge.active { background: rgba(59,130,80,0.08); color: #3B7050; border: 1px solid rgba(59,130,80,0.25); }
+
+  /* ACHIEVEMENTS */
+  #achievements { background: var(--white); }
+  .counters { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 48px 0; }
+  .counter-card {
+    text-align: center; padding: 36px 20px; background: var(--cream);
+    border-radius: 16px; border: 1px solid var(--border);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .counter-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(232,160,32,0.04) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .counter-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(28,28,30,0.06); }
+  .counter-card:hover::before { opacity: 1; }
+  .counter-num {
+    font-size: 50px; font-weight: 700; font-family: 'DM Mono', monospace;
+    line-height: 1; position: relative;
+    background: linear-gradient(135deg, var(--amber), #D49520);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .counter-label { font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; }
+  .achievements-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+  .ach-card {
+    background: var(--cream); border-radius: 18px; padding: 36px; border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: transform 0.4s var(--transition-smooth), box-shadow 0.4s var(--transition-smooth), border-color 0.3s;
+  }
+  .ach-card:hover { box-shadow: 0 20px 56px rgba(28,28,30,0.1); border-color: rgba(232,160,32,0.35); transform: translateY(-4px); }
+  .ach-category {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 16px;
+  }
+  .ach-category.professional { background: rgba(232,160,32,0.1); color: var(--amber-dim); border: 1px solid rgba(232,160,32,0.25); }
+  .ach-category.academic { background: rgba(59,74,107,0.08); color: var(--slate); border: 1px solid rgba(59,74,107,0.25); }
+  .ach-year { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; font-family: 'DM Mono', monospace; }
+  .ach-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; line-height: 1.3; }
+  .ach-inst { font-size: 13px; color: var(--amber-dim); font-weight: 600; margin-bottom: 12px; }
+  .ach-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+  /* CONTACT */
+  #contact { background: var(--cream); position: relative; overflow: hidden; }
+  #contact::before {
+    content: ''; position: absolute; top: -200px; right: -200px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; margin-top: 48px; align-items: start; }
+  .contact-form-card {
+    background: var(--white); border-radius: 18px; padding: 48px; border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(28,28,30,0.04);
+  }
+  .form-group { position: relative; margin-bottom: 32px; }
+  .form-label {
+    position: absolute; left: 0; top: 14px; font-size: 14px; color: var(--text-muted);
+    transition: 0.25s var(--transition-smooth); pointer-events: none;
+  }
+  .form-input {
+    width: 100%; background: transparent; border: none; border-bottom: 1.5px solid var(--border);
+    font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: var(--text-primary);
+    padding: 14px 0 10px; outline: none; transition: border-color 0.3s;
+  }
+  .form-input:focus { border-bottom-color: var(--amber); }
+  .form-input:focus + .form-label,
+  .form-input:not(:placeholder-shown) + .form-label {
+    top: -10px; font-size: 11px; color: var(--amber);
+    letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
+  }
+  .form-underline {
+    position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+    background: linear-gradient(90deg, var(--amber), #F0C060);
+    transition: width 0.4s var(--transition-smooth);
+  }
+  .form-input:focus ~ .form-underline { width: 100%; }
+  textarea.form-input { resize: vertical; min-height: 100px; padding-top: 14px; }
+  .btn-send {
+    background: linear-gradient(135deg, var(--amber), #D4911A);
+    color: var(--charcoal); font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 15px; padding: 16px 40px; border-radius: 10px;
+    border: none; cursor: pointer; letter-spacing: 0.3px; width: 100%;
+    position: relative; overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .btn-send::after {
+    content: ''; position: absolute; top: -50%; left: -60%; width: 30%; height: 200%;
+    background: rgba(255,255,255,0.25); transform: skewX(-20deg);
+    transition: left 0.6s;
+  }
+  .btn-send:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(232,160,32,0.35); }
+  .btn-send:hover::after { left: 130%; }
+  .contact-info-card {
+    background: var(--charcoal); border-radius: 18px; padding: 48px; color: var(--white);
+    position: relative; overflow: hidden;
+  }
+  .contact-info-card::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-info-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .contact-info-card > p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 36px; line-height: 1.7; }
+  .contact-row {
+    display: flex; align-items: flex-start; gap: 18px; padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.25s; cursor: default;
+  }
+  .contact-row:hover { transform: translateX(8px); }
+  .contact-row:hover .contact-row-icon { color: var(--amber); }
+  .contact-row-icon { font-size: 20px; color: rgba(255,255,255,0.35); min-width: 22px; transition: color 0.25s; margin-top: 2px; }
+  .contact-row-label { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; }
+  .contact-row-value { font-size: 14px; color: rgba(255,255,255,0.8); margin-top: 3px; }
+  .contact-row-value a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s; }
+  .contact-row-value a:hover { color: var(--amber); }
+  .contact-info-socials { display: flex; gap: 12px; margin-top: 36px; }
+  .ci-social {
+    width: 42px; height: 42px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.45);
+    text-decoration: none; transition: all 0.3s; font-size: 17px;
+    background: rgba(255,255,255,0.03);
+  }
+  .ci-social:hover { border-color: var(--amber); color: var(--amber); background: rgba(232,160,32,0.08); transform: translateY(-3px); }
+
+  /* FOOTER */
+  footer {
+    background: var(--charcoal); padding: 48px 5% 36px; text-align: center;
+    border-top: 1px solid rgba(232,160,32,0.1);
+    position: relative;
+  }
+  footer::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  }
+  .footer-name { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+  .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 28px; }
+  .footer-icons { display: flex; justify-content: center; gap: 14px; margin-bottom: 28px; }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+  .footer-copy span { color: var(--amber); }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--charcoal); color: var(--white); font-size: 14px; font-weight: 500;
+    padding: 16px 28px; border-radius: 12px; z-index: 2000;
+    border: 1px solid rgba(232,160,32,0.3); opacity: 0;
+    transition: transform 0.4s var(--transition-smooth), opacity 0.4s;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* BACK TO TOP */
+  .back-to-top {
+    position: fixed; bottom: 28px; right: 28px; width: 48px; height: 48px;
+    border-radius: 14px; background: var(--charcoal); border: 1.5px solid rgba(232,160,32,0.25);
+    color: var(--amber); font-size: 20px; cursor: pointer; z-index: 999;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translateY(20px);
+    transition: all 0.3s var(--transition-smooth);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .back-to-top.show { opacity: 1; transform: translateY(0); }
+  .back-to-top:hover { background: var(--amber); color: var(--charcoal); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232,160,32,0.3); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .about-avatar-block { display: flex; flex-direction: column; align-items: center; }
+    .about-mv { max-width: 500px; }
+  }
+  @media (max-width: 900px) {
+    .exp-card { grid-template-columns: 1fr; }
+    .proj-card { grid-template-columns: 1fr; }
+    .proj-left { padding: 28px 28px; flex-direction: row; align-items: center; }
+    .proj-num { font-size: 48px; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .counters { grid-template-columns: repeat(2, 1fr); }
+    .achievements-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .exp-right { padding: 32px 28px; }
+    .proj-right { padding: 32px 28px; }
+  }
+  @media (max-width: 680px) {
+    :root { --section-pad: 72px 0; }
+    .nav-links {
+      display: none; flex-direction: column; position: absolute;
+      top: 64px; left: 0; right: 0; background: rgba(28,28,30,0.98);
+      backdrop-filter: blur(20px); padding: 24px 5% 32px; gap: 8px;
+      border-bottom: 1px solid rgba(232,160,32,0.15);
+    }
+    .nav-links.open { display: flex; animation: fadeIn 0.3s; }
+    .nav-links a { padding: 10px 0; font-size: 15px; }
+    .hamburger { display: flex; }
+    .counters { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .about-stats { gap: 20px; }
+    .about-mv { grid-template-columns: 1fr; }
+    .proj-outcomes { grid-template-columns: 1fr; }
+    .hero-ctas { flex-direction: column; align-items: flex-start; }
+    h1.hero-name { letter-spacing: -1.5px; }
+    .contact-form-card { padding: 32px 24px; }
+    .contact-info-card { padding: 32px 24px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .certs-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 420px) {
+    .about-stats { flex-direction: column; gap: 16px; }
+    .counter-card { padding: 24px 12px; }
+    .counter-num { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- CURSOR GLOW -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#landing" class="nav-logo">VK</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- LANDING -->
+<section id="landing">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="hero-grid-pattern"></div>
+  <!-- Particles generated by JS -->
+  <div id="particleContainer"></div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Available for Opportunities</div>
+    <h1 class="hero-name">Vivek <span>Kumar</span></h1>
+    <p class="hero-titles">
+      Salesforce QA Automation Engineer
+      <span class="separator"></span>
+      Copado Robotic Testing
+      <span class="separator"></span>
+      GCP ETL Testing
+    </p>
+    <p class="hero-intro">
+      I help healthcare technology teams ship Salesforce with confidence — building automation frameworks that cut regression cycles by 80%, maintaining 90%+ test coverage, and turning complex QA challenges into repeatable, audit-ready processes.
+    </p>
+    <div class="hero-ctas">
+      <a href="#about" class="btn-primary" id="heroLearnMore">Learn More About Me</a>
+      <a href="#contact" class="btn-outline" id="heroGetInTouch">Get In Touch</a>
+    </div>
+    <div class="hero-socials">
+      <a href="https://linkedin.com/in/vk-sfdc-qa" target="_blank" class="social-icon" title="LinkedIn" id="heroLinkedIn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="mailto:Zvivek97@gmail.com" class="social-icon" title="Email" id="heroEmail">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </a>
+      <a href="tel:+918249510590" class="social-icon" title="Phone" id="heroPhone">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-mouse"><span></span></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-avatar-block reveal-left">
+        <div class="avatar-ring">
+          <span class="avatar-initials">VK</span>
+        </div>
+        <div class="avatar-tag">Open to Relocation · Remote</div>
+        <div class="about-mv">
+          <div class="mv-card">
+            <h4>Mission</h4>
+            <p>Deliver automation frameworks that make every Salesforce release predictable, traceable, and audit-proof.</p>
+          </div>
+          <div class="mv-card">
+            <h4>Vision</h4>
+            <p>Become the defining voice in Copado Robotic Testing — bridging QA engineering and Salesforce DevOps at scale.</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-text reveal-right">
+        <span class="section-label">About Me</span>
+        <h2 class="section-title">QA Engineer who builds <span class="amber">automation</span> that actually sticks</h2>
+        <div class="divider"></div>
+        <p>I'm a Salesforce QA Automation Engineer with 4+ years at Infosys, specialising in Copado Robotic Testing (CRT) — one of the rarer certifications in the Indian market. My core work has been building and owning CI/CD-enabled test frameworks for Salesforce Sales Cloud, most extensively for CVS Health, where I automated 100+ critical regression scenarios and cut manual effort by 80%.</p>
+        <p>Beyond Salesforce, I've led end-to-end ETL pipeline testing on GCP for a U.S. healthcare insurer, writing BigQuery SQL test scripts for source-to-target validation, schema checks, and financial report accuracy. My background spans the full QA lifecycle — from requirement analysis and test design through UAT co-ordination and production sign-off.</p>
+        <p>I hold certifications in Copado CRT, Copado AI, Google Cloud ACE, and Salesforce Administrator, and I'm motivated by automation work that solves real delivery pain — not just ticking coverage boxes.</p>
+        <div class="about-stats">
+          <div class="stat"><div class="stat-num"><span class="counter-value" data-target="4">0</span><span>+</span></div><div class="stat-label">Years Experience</div></div>
+          <div class="stat"><div class="stat-num"><span class="counter-value" data-target="6">0</span></div><div class="stat-label">Certifications</div></div>
+          <div class="stat"><div class="stat-num"><span class="counter-value" data-target="80">0</span><span>%</span></div><div class="stat-label">Regression Reduction</div></div>
+          <div class="stat"><div class="stat-num"><span class="counter-value" data-target="90">0</span><span>%+</span></div><div class="stat-label">Test Coverage</div></div>
+        </div>
+        <div class="about-nav-pills">
+          <a href="#experience" class="pill-link">Work Experience</a>
+          <a href="#education" class="pill-link">Education</a>
+          <a href="#projects" class="pill-link">Projects</a>
+          <a href="#skills" class="pill-link">Skills</a>
+          <a href="#certifications" class="pill-link">Certifications</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <span class="section-label reveal">Work History</span>
+    <h2 class="section-title reveal">Where I've <span class="amber">made an impact</span></h2>
+    <div class="divider reveal"></div>
+
+    <!-- CVS Health -->
+    <div class="exp-card reveal-left">
+      <div class="exp-left">
+        <div>
+          <div class="exp-badge">Full-Time</div>
+          <div class="exp-company">Infosys Limited</div>
+          <div class="exp-role">Associate Consultant</div>
+        </div>
+        <div class="exp-meta">
+          📍 Bhubaneswar, Odisha<br>
+          🗓 Jan 2022 – Present<br>
+          👤 Client: CVS Health
+        </div>
+      </div>
+      <div class="exp-right">
+        <span class="exp-project-tag">Project 01 — Salesforce QA Automation</span>
+        <h3>CVS Health · Healthcare Insurance · Salesforce Sales Cloud</h3>
+        <ul class="exp-bullets">
+          <li>Analyzed functional requirements and designed test cases covering Salesforce Sales Cloud workflows, validation rules, integrations, and cross-object relationships including positive, negative, boundary, and edge scenarios; maintained RTM for end-to-end requirement traceability across sprint cycles.</li>
+          <li>Executed functional, regression, system, and integration testing using manual testing and Copado Robotic Testing (CRT) across multiple sprint releases; managed full defect lifecycle via JIRA and IBM RTC including triage, root cause analysis, retesting, and closure.</li>
+          <li>Prepared UAT test packs, conducted stakeholder walkthroughs, tracked UAT defects, and delivered 100% UAT acceptance sign-off on every production release; produced sprint-level test summary reports, defect trend analysis, and release readiness dashboards.</li>
+          <li>Designed and implemented a scalable CI/CD-enabled CRT automation framework integrated with Git version control, using data-driven and keyword-driven approaches across all key Salesforce workflows.</li>
+        </ul>
+        <div class="exp-achievements">
+          <h4>Key Achievements</h4>
+          <div class="achievement-item"><div class="achievement-num">80%</div><div class="achievement-desc">Reduction in manual regression effort through CRT framework automation</div></div>
+          <div class="achievement-item"><div class="achievement-num">90%+</div><div class="achievement-desc">Test coverage achieved across all key Salesforce Sales Cloud workflows</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stop Loss -->
+    <div class="exp-card reveal-right">
+      <div class="exp-left">
+        <div>
+          <div class="exp-badge">Full-Time</div>
+          <div class="exp-company">Infosys Limited</div>
+          <div class="exp-role">Software Quality Engineer</div>
+        </div>
+        <div class="exp-meta">
+          📍 Bhubaneswar, Odisha<br>
+          🗓 2020 – Jan 2022<br>
+          👤 Client: U.S. Healthcare Insurer
+        </div>
+      </div>
+      <div class="exp-right">
+        <span class="exp-project-tag">Project 02 — GCP Data Testing</span>
+        <h3>Stop Loss Reporting · GCP-Based ETL Pipeline</h3>
+        <ul class="exp-bullets">
+          <li>Owned full ETL testing for a GCP-based data pipeline processing U.S. healthcare claims and Stop Loss financial reports — validating data flow from raw file ingestion in Cloud Storage (GCS), through BigQuery transformation layers, to final downstream reports across Dev and Production environments.</li>
+          <li>Designed and executed BigQuery SQL test scripts for record count reconciliation, schema and data-type checks, null/duplicate detection, source-to-target field-level comparison, business rule validation, and aggregation accuracy; built a reusable SQL test library used across all pipeline releases.</li>
+          <li>Created structured ETL test cases covering all pipeline stages with a traceability matrix linking requirements to test cases, ensuring 100% coverage before every release and providing audit documentation for compliance reviews.</li>
+          <li>Documented data defects in JIRA with SQL evidence, performed root cause analysis with engineers, re-validated all fixes, and prepared Production sign-off documentation in MS Excel.</li>
+        </ul>
+        <div class="exp-achievements">
+          <h4>Key Achievements</h4>
+          <div class="achievement-item"><div class="achievement-num">100%</div><div class="achievement-desc">Requirement coverage and UAT sign-off maintained across every production release</div></div>
+          <div class="achievement-item"><div class="achievement-num">Reusable</div><div class="achievement-desc">SQL test library built for regression — eliminated redundant scripting across quarterly releases</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <span class="section-label reveal">Academic Background</span>
+    <h2 class="section-title reveal">Education &amp; <span class="amber">Foundations</span></h2>
+    <div class="divider reveal"></div>
+    <div class="edu-grid">
+      <div class="edu-card reveal-left">
+        <div class="edu-icon">🎓</div>
+        <div class="edu-degree">B.Tech in Electrical Engineering</div>
+        <div class="edu-institute">National Institute of Science and Technology, Berhampur, Odisha</div>
+        <div class="edu-meta">
+          <span class="edu-pill gold">CGPA: 8.29</span>
+          <span class="edu-pill">Full-Time</span>
+          <span class="edu-pill">Engineering</span>
+        </div>
+        <ul class="edu-highlights">
+          <li>Strong foundation in systems thinking, signal processing, and programming logic — directly applicable to data-pipeline and automation work.</li>
+          <li>Quantitative problem-solving and circuit analysis built the analytical mindset behind SQL-based data validation and test case design.</li>
+          <li>Graduated with a distinction-grade CGPA of 8.29, demonstrating consistent academic performance across a rigorous 4-year programme.</li>
+        </ul>
+      </div>
+      <div class="edu-card reveal-right">
+        <div class="edu-icon">📜</div>
+        <div class="edu-degree">Professional Certifications &amp; Continuous Learning</div>
+        <div class="edu-institute">Copado · Google Cloud · Infosys · Salesforce</div>
+        <div class="edu-meta">
+          <span class="edu-pill gold">6 Certifications</span>
+          <span class="edu-pill">Ongoing</span>
+        </div>
+        <ul class="edu-highlights">
+          <li>Copado Certified Robotic Testing (CRT) — validates advanced test automation skills on the Salesforce-native Copado platform, rare in the Indian market.</li>
+          <li>Google Cloud Associate Cloud Engineer — demonstrates real-world GCP infrastructure knowledge supporting ETL pipeline and BigQuery QA work.</li>
+          <li>Infosys Certified Salesforce Administrator and Advanced Selenium Automation Tester round out platform knowledge and test engineering depth.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <span class="section-label reveal">Featured Work</span>
+    <h2 class="section-title reveal">Projects that <span class="amber">delivered</span></h2>
+    <div class="divider reveal"></div>
+
+    <div class="proj-card reveal-left">
+      <div class="proj-left">
+        <div class="proj-num">01</div>
+        <div>
+          <div class="proj-type">Salesforce QA Automation</div>
+          <div class="proj-duration">2022 – Present</div>
+        </div>
+      </div>
+      <div class="proj-right">
+        <h3>CVS Health — CRT Automation Framework</h3>
+        <p class="proj-desc">Led the design and build of a scalable, CI/CD-enabled Copado Robotic Testing framework for CVS Health's Salesforce Sales Cloud platform. Integrated Git version control for traceable Salesforce deployments and implemented data-driven and keyword-driven test architecture to cover 100+ critical regression scenarios across every major release cycle.</p>
+        <ul class="proj-outcomes">
+          <li class="proj-outcome">Reduced manual regression effort by 80% through end-to-end automation of critical test scenarios</li>
+          <li class="proj-outcome">Achieved 90%+ test coverage across all key Salesforce workflows, validation rules, and integrations</li>
+          <li class="proj-outcome">Delivered 100% UAT acceptance sign-off on every production release over 3+ years</li>
+          <li class="proj-outcome">Established automation coding standards and mentored junior team members onto the CRT framework</li>
+        </ul>
+        <div class="tech-pills">
+          <span class="tech-pill">Copado CRT</span>
+          <span class="tech-pill">Salesforce Sales Cloud</span>
+          <span class="tech-pill">Git</span>
+          <span class="tech-pill">JIRA</span>
+          <span class="tech-pill">IBM RTC</span>
+          <span class="tech-pill">IBM RQM</span>
+          <span class="tech-pill">Agile/Scrum</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal-right">
+      <div class="proj-left">
+        <div class="proj-num">02</div>
+        <div>
+          <div class="proj-type">GCP ETL Data Testing</div>
+          <div class="proj-duration">2020 – 2022</div>
+        </div>
+      </div>
+      <div class="proj-right">
+        <h3>Stop Loss Reporting — GCP ETL Pipeline QA</h3>
+        <p class="proj-desc">Owned the complete QA function for a GCP-based healthcare data pipeline processing U.S. Stop Loss financial claims. Designed and executed BigQuery SQL test scripts validating data flow from raw GCS ingestion through transformation layers to final downstream financial reports — tested across both Dev and Production environments.</p>
+        <ul class="proj-outcomes">
+          <li class="proj-outcome">Built a reusable SQL test library that eliminated redundant scripting across quarterly release cycles</li>
+          <li class="proj-outcome">Validated 100% of financial report fields for Stop Loss accuracy through source-to-target comparison</li>
+          <li class="proj-outcome">Maintained a full traceability matrix ensuring 100% business requirement coverage before every release</li>
+          <li class="proj-outcome">Delivered compliant audit documentation supporting regulatory sign-off for every production push</li>
+        </ul>
+        <div class="tech-pills">
+          <span class="tech-pill">BigQuery SQL</span>
+          <span class="tech-pill">GCP</span>
+          <span class="tech-pill">Cloud Storage (GCS)</span>
+          <span class="tech-pill">JIRA</span>
+          <span class="tech-pill">MS Excel</span>
+          <span class="tech-pill">ETL Testing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <span class="section-label reveal">Technical Proficiency</span>
+    <h2 class="section-title reveal">Skills &amp; <span class="amber">Tools</span></h2>
+    <div class="divider reveal"></div>
+    <div class="skills-grid" id="skillsGrid">
+
+      <div class="skill-card reveal-scale">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon">⚙️</div>
+          <div class="skill-cat-name">Automation &amp; Programming</div>
+        </div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Copado Robotic Testing (CRT)</span><span class="skill-pct">92%</span></div><div class="skill-bar"><div class="skill-fill" data-width="92"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Selenium WebDriver</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-width="80"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Java</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-width="75"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Test Framework Design</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" data-width="88"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal-scale">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon">☁️</div>
+          <div class="skill-cat-name">Salesforce &amp; CRM</div>
+        </div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Salesforce Sales Cloud</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">CRM Testing &amp; Workflow</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" data-width="88"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Validation Rules &amp; Flows</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Integration Testing</span><span class="skill-pct">82%</span></div><div class="skill-bar"><div class="skill-fill" data-width="82"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal-scale">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon">🗄️</div>
+          <div class="skill-cat-name">ETL &amp; Data Testing</div>
+        </div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">BigQuery SQL</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">ETL Pipeline Testing</span><span class="skill-pct">83%</span></div><div class="skill-bar"><div class="skill-fill" data-width="83"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Source-to-Target Validation</span><span class="skill-pct">87%</span></div><div class="skill-bar"><div class="skill-fill" data-width="87"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Data Reconciliation</span><span class="skill-pct">82%</span></div><div class="skill-bar"><div class="skill-fill" data-width="82"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal-scale">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon">🔁</div>
+          <div class="skill-cat-name">QA Methodology</div>
+        </div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Regression &amp; UAT</span><span class="skill-pct">93%</span></div><div class="skill-bar"><div class="skill-fill" data-width="93"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Test Planning &amp; RTM</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Agile/Scrum QA</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" data-width="88"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Defect Management</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal-scale">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon">🌐</div>
+          <div class="skill-cat-name">Cloud &amp; DevOps</div>
+        </div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Google Cloud Platform (GCP)</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-width="80"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Git / Version Control</span><span class="skill-pct">82%</span></div><div class="skill-bar"><div class="skill-fill" data-width="82"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Copado CI/CD</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">Cloud Storage (GCS)</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-width="75"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal-scale">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon">🛠️</div>
+          <div class="skill-cat-name">Tools &amp; Platforms</div>
+        </div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">JIRA</span><span class="skill-pct">92%</span></div><div class="skill-bar"><div class="skill-fill" data-width="92"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">IBM RTC / IBM RQM</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-width="80"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">GitHub Copilot / Copado AI</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-width="75"></div></div></div>
+        <div class="skill-row"><div class="skill-row-header"><span class="skill-name">MS Excel (Reporting)</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="container">
+    <span class="section-label reveal">Credentials</span>
+    <h2 class="section-title reveal">Certifications &amp; <span class="amber">Credentials</span></h2>
+    <div class="divider reveal"></div>
+    <div class="certs-grid">
+
+      <div class="cert-card reveal-scale">
+        <div class="cert-icon-wrap copado">🤖</div>
+        <div class="cert-name">Copado Certified Robotic Testing</div>
+        <div class="cert-provider">Copado</div>
+        <span class="cert-badge active">Active</span>
+      </div>
+
+      <div class="cert-card reveal-scale">
+        <div class="cert-icon-wrap copado">🧠</div>
+        <div class="cert-name">Copado Certified AI Testing</div>
+        <div class="cert-provider">Copado</div>
+        <span class="cert-badge active">Active</span>
+      </div>
+
+      <div class="cert-card reveal-scale">
+        <div class="cert-icon-wrap google">☁️</div>
+        <div class="cert-name">Google Cloud Associate Cloud Engineer</div>
+        <div class="cert-provider">Google Cloud</div>
+        <span class="cert-badge active">Active</span>
+      </div>
+
+      <div class="cert-card reveal-scale">
+        <div class="cert-icon-wrap infosys">🛡️</div>
+        <div class="cert-name">Infosys Certified Salesforce Administrator</div>
+        <div class="cert-provider">Infosys</div>
+        <span class="cert-badge active">Active</span>
+      </div>
+
+      <div class="cert-card reveal-scale">
+        <div class="cert-icon-wrap infosys">🔬</div>
+        <div class="cert-name">Infosys Certified Advanced Selenium Automation Tester</div>
+        <div class="cert-provider">Infosys</div>
+        <span class="cert-badge active">Active</span>
+      </div>
+
+      <div class="cert-card reveal-scale">
+        <div class="cert-icon-wrap salesforce">⚡</div>
+        <div class="cert-name">Salesforce Certified Administrator</div>
+        <div class="cert-provider">Salesforce</div>
+        <span class="cert-badge active">Active</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="container">
+    <span class="section-label reveal">Recognition</span>
+    <h2 class="section-title reveal">Awards &amp; <span class="amber">Achievements</span></h2>
+    <div class="divider reveal"></div>
+
+    <div class="counters">
+      <div class="counter-card reveal-scale">
+        <div class="counter-num"><span class="counter-value" data-target="100">0</span>+</div>
+        <div class="counter-label">Test Cases Automated</div>
+      </div>
+      <div class="counter-card reveal-scale">
+        <div class="counter-num"><span class="counter-value" data-target="80">0</span>%</div>
+        <div class="counter-label">Regression Reduction</div>
+      </div>
+      <div class="counter-card reveal-scale">
+        <div class="counter-num"><span class="counter-value" data-target="6">0</span></div>
+        <div class="counter-label">Certifications Earned</div>
+      </div>
+      <div class="counter-card reveal-scale">
+        <div class="counter-num"><span class="counter-value" data-target="4">0</span>+</div>
+        <div class="counter-label">Years of Impact</div>
+      </div>
+    </div>
+
+    <div class="achievements-grid">
+      <div class="ach-card reveal-scale">
+        <span class="ach-category professional">Professional</span>
+        <div class="ach-year">2023</div>
+        <div class="ach-title">Insta Award — Best Automation Initiative</div>
+        <div class="ach-inst">Infosys Limited</div>
+        <p class="ach-desc">Recognised for designing and delivering the CRT automation framework that reduced CVS Health's manual regression effort by 80% and achieved 90%+ test coverage across Salesforce Sales Cloud workflows.</p>
+      </div>
+      <div class="ach-card reveal-scale">
+        <span class="ach-category professional">Professional</span>
+        <div class="ach-year">2022</div>
+        <div class="ach-title">Rising Star — QA Engineering Excellence</div>
+        <div class="ach-inst">Infosys Limited</div>
+        <p class="ach-desc">Awarded for consistently delivering 100% UAT acceptance sign-off across consecutive production releases and building reusable SQL test libraries that eliminated redundant scripting for the GCP ETL pipeline project.</p>
+      </div>
+      <div class="ach-card reveal-scale">
+        <span class="ach-category academic">Academic</span>
+        <div class="ach-year">2020</div>
+        <div class="ach-title">Distinction — B.Tech Electrical Engineering</div>
+        <div class="ach-inst">National Institute of Science and Technology</div>
+        <p class="ach-desc">Graduated with a CGPA of 8.29 from a rigorous 4-year programme, demonstrating strong analytical and quantitative problem-solving skills that underpin data-pipeline testing and automation architecture.</p>
+      </div>
+      <div class="ach-card reveal-scale">
+        <span class="ach-category professional">Professional</span>
+        <div class="ach-year">2024</div>
+        <div class="ach-title">Copado CRT Certified — Rare in India</div>
+        <div class="ach-inst">Copado</div>
+        <p class="ach-desc">Achieved one of the rarest QA automation certifications in the Indian market — Copado Certified Robotic Testing — validating advanced Salesforce-native test automation expertise.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <span class="section-label reveal">Let's Connect</span>
+    <h2 class="section-title reveal">Get In <span class="amber">Touch</span></h2>
+    <div class="divider reveal"></div>
+
+    <div class="contact-grid">
+      <div class="contact-form-card reveal-left">
+        <form id="contactForm">
+          <div class="form-group">
+            <input type="text" class="form-input" id="contactName" name="name" placeholder=" " required>
+            <label class="form-label" for="contactName">Full Name</label>
+            <div class="form-underline"></div>
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-input" id="contactEmail" name="email" placeholder=" " required>
+            <label class="form-label" for="contactEmail">Email Address</label>
+            <div class="form-underline"></div>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-input" id="contactSubject" name="subject" placeholder=" ">
+            <label class="form-label" for="contactSubject">Subject</label>
+            <div class="form-underline"></div>
+          </div>
+          <div class="form-group">
+            <textarea class="form-input" id="contactMessage" name="message" placeholder=" " required></textarea>
+            <label class="form-label" for="contactMessage">Message</label>
+            <div class="form-underline"></div>
+          </div>
+          <button type="submit" class="btn-send" id="contactSubmit">Send Message</button>
+        </form>
+      </div>
+
+      <div class="contact-info-card reveal-right">
+        <h3>Let's Talk</h3>
+        <p>I'm open to remote and relocation-friendly opportunities in Salesforce QA Automation, Copado testing, and GCP data quality engineering. Let's connect.</p>
+
+        <div class="contact-row">
+          <div class="contact-row-icon">📧</div>
+          <div>
+            <div class="contact-row-label">Email</div>
+            <div class="contact-row-value"><a href="mailto:Zvivek97@gmail.com">Zvivek97@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-row-icon">📱</div>
+          <div>
+            <div class="contact-row-label">Phone</div>
+            <div class="contact-row-value"><a href="tel:+918249510590">+91 82495 10590</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-row-icon">📍</div>
+          <div>
+            <div class="contact-row-label">Location</div>
+            <div class="contact-row-value">Bhubaneswar, Odisha, India</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-row-icon">💼</div>
+          <div>
+            <div class="contact-row-label">LinkedIn</div>
+            <div class="contact-row-value"><a href="https://linkedin.com/in/vk-sfdc-qa" target="_blank">linkedin.com/in/vk-sfdc-qa</a></div>
+          </div>
+        </div>
+
+        <div class="contact-info-socials">
+          <a href="https://linkedin.com/in/vk-sfdc-qa" target="_blank" class="ci-social" title="LinkedIn" id="contactLinkedIn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="mailto:Zvivek97@gmail.com" class="ci-social" title="Email" id="contactEmailIcon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+          <a href="tel:+918249510590" class="ci-social" title="Phone" id="contactPhoneIcon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Vivek Kumar</div>
+  <div class="footer-tagline">Salesforce QA Automation Engineer · Copado · GCP</div>
+  <div class="footer-icons">
+    <a href="https://linkedin.com/in/vk-sfdc-qa" target="_blank" class="ci-social" title="LinkedIn" id="footerLinkedIn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    </a>
+    <a href="mailto:Zvivek97@gmail.com" class="ci-social" title="Email" id="footerEmail">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </a>
+    <a href="tel:+918249510590" class="ci-social" title="Phone" id="footerPhone">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </a>
+  </div>
+  <div class="footer-copy">© 2024 Vivek Kumar. Crafted with <span>♥</span> — All rights reserved.</div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+(function() {
+  'use strict';
+
+  // ==========================================
+  // PARTICLES
+  // ==========================================
+  const particleContainer = document.getElementById('particleContainer');
+  function createParticles() {
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      const size = Math.random() * 3 + 1.5;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.bottom = '-10px';
+      p.style.animationDuration = (Math.random() * 12 + 8) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      particleContainer.appendChild(p);
+    }
+  }
+  createParticles();
+
+  // ==========================================
+  // CURSOR GLOW (desktop only)
+  // ==========================================
+  const cursorGlow = document.getElementById('cursorGlow');
+  if (window.matchMedia('(hover: hover)').matches) {
+    let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX; mouseY = e.clientY;
+    });
+    function animateGlow() {
+      glowX += (mouseX - glowX) * 0.08;
+      glowY += (mouseY - glowY) * 0.08;
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+      requestAnimationFrame(animateGlow);
+    }
+    animateGlow();
+  }
+
+  // ==========================================
+  // SCROLL PROGRESS
+  // ==========================================
+  const scrollProgress = document.getElementById('scrollProgress');
+  function updateScrollProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    scrollProgress.style.width = pct + '%';
+  }
+
+  // ==========================================
+  // NAV SCROLL STATE
+  // ==========================================
+  const mainNav = document.getElementById('mainNav');
+  function updateNavState() {
+    if (window.scrollY > 60) {
+      mainNav.classList.add('scrolled');
+    } else {
+      mainNav.classList.remove('scrolled');
+    }
+  }
+
+  // ==========================================
+  // BACK TO TOP
+  // ==========================================
+  const backToTop = document.getElementById('backToTop');
+  function updateBackToTop() {
+    if (window.scrollY > 500) {
+      backToTop.classList.add('show');
+    } else {
+      backToTop.classList.remove('show');
+    }
+  }
+  backToTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ==========================================
+  // ACTIVE NAV LINK
+  // ==========================================
+  const sections = document.querySelectorAll('section[id]');
+  const navLinksAll = document.querySelectorAll('.nav-links a');
+  function updateActiveNav() {
+    const scrollY = window.scrollY + 120;
+    sections.forEach(function(section) {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+      if (scrollY >= top && scrollY < top + height) {
+        navLinksAll.forEach(function(a) {
+          a.classList.remove('active');
+          if (a.getAttribute('href') === '#' + id) {
+            a.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  // ==========================================
+  // COMBINED SCROLL HANDLER
+  // ==========================================
+  let ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        updateScrollProgress();
+        updateNavState();
+        updateBackToTop();
+        updateActiveNav();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // ==========================================
+  // MOBILE MENU
+  // ==========================================
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  hamburgerBtn.addEventListener('click', function() {
+    navLinks.classList.toggle('open');
+    hamburgerBtn.classList.toggle('open');
+  });
+  // Close on link click
+  navLinks.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      navLinks.classList.remove('open');
+      hamburgerBtn.classList.remove('open');
+    });
+  });
+
+  // ==========================================
+  // INTERSECTION OBSERVER — REVEAL ANIMATIONS
+  // ==========================================
+  const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  const revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Don't unobserve — let them stay visible
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealElements.forEach(function(el) { revealObserver.observe(el); });
+
+  // Section labels
+  const sectionLabels = document.querySelectorAll('.section-label');
+  const labelObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.5 });
+  sectionLabels.forEach(function(el) { labelObserver.observe(el); });
+
+  // ==========================================
+  // SKILL BARS ANIMATION
+  // ==========================================
+  const skillFills = document.querySelectorAll('.skill-fill');
+  const skillObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        const width = entry.target.getAttribute('data-width');
+        entry.target.style.width = width + '%';
+        setTimeout(function() {
+          entry.target.classList.add('animated');
+        }, 1500);
+        skillObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  skillFills.forEach(function(el) { skillObserver.observe(el); });
+
+  // ==========================================
+  // COUNTER ANIMATION
+  // ==========================================
+  const counterValues = document.querySelectorAll('.counter-value');
+  let countersAnimated = new Set();
+  const counterObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !countersAnimated.has(entry.target)) {
+        countersAnimated.add(entry.target);
+        const target = parseInt(entry.target.getAttribute('data-target'));
+        let current = 0;
+        const duration = 1600;
+        const step = Math.max(1, Math.floor(target / (duration / 16)));
+        const startTime = performance.now();
+        function animate(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          current = Math.round(eased * target);
+          entry.target.textContent = current;
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            entry.target.textContent = target;
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+    });
+  }, { threshold: 0.4 });
+  counterValues.forEach(function(el) { counterObserver.observe(el); });
+
+  // ==========================================
+  // CONTACT FORM
+  // ==========================================
+  const contactForm = document.getElementById('contactForm');
+  const toast = document.getElementById('toast');
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3500);
+  }
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('contactName').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+    if (!name || !email || !message) {
+      showToast('Please fill in all required fields.');
+      return;
+    }
+    // Simulate submission
+    const btn = document.getElementById('contactSubmit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    setTimeout(function() {
+      showToast('Message sent successfully! I\'ll get back to you soon.');
+      contactForm.reset();
+      btn.textContent = 'Send Message';
+      btn.disabled = false;
+    }, 1500);
+  });
+
+  // ==========================================
+  // INIT
+  // ==========================================
+  updateScrollProgress();
+  updateNavState();
+  updateBackToTop();
+})();
+</script>
+
+</body>
+</html>

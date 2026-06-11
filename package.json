@@ -1,0 +1,9 @@
+{
+  "name": "vivek-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio website for Vivek Kumar — Salesforce QA Automation Engineer",
+  "scripts": {
+    "dev": "npx -y live-server --port=3000 --no-browser",
+    "start": "npx -y live-server --port=3000"
+  }
+}
