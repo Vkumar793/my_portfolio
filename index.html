@@ -1284,7 +1284,7 @@
 
     <div class="contact-grid">
       <div class="contact-form-card reveal-left">
-        <form id="contactForm">
+        <form id="contactForm" action="https://formspree.io/f/xxxxxabc" method="POST"></form>
           <div class="form-group">
             <input type="text" class="form-input" id="contactName" name="name" placeholder=" " required>
             <label class="form-label" for="contactName">Full Name</label>
@@ -1605,26 +1605,6 @@
     toast.classList.add('show');
     setTimeout(function() { toast.classList.remove('show'); }, 3500);
   }
-  contactForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name = document.getElementById('contactName').value.trim();
-    const email = document.getElementById('contactEmail').value.trim();
-    const message = document.getElementById('contactMessage').value.trim();
-    if (!name || !email || !message) {
-      showToast('Please fill in all required fields.');
-      return;
-    }
-    // Simulate submission
-    const btn = document.getElementById('contactSubmit');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-    setTimeout(function() {
-      showToast('Message sent successfully! I\'ll get back to you soon.');
-      contactForm.reset();
-      btn.textContent = 'Send Message';
-      btn.disabled = false;
-    }, 1500);
-  });
 
   // ==========================================
   // INIT
