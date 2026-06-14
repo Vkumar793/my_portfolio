@@ -330,6 +330,12 @@
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
   .avatar-tag {
     position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
     background: linear-gradient(135deg, var(--amber), #D4911A);
@@ -868,7 +874,7 @@
     <div class="about-grid">
       <div class="about-avatar-block reveal-left">
         <div class="avatar-ring">
-          <span class="avatar-initials">VK</span>
+          <img src="profile.jpeg" alt="Vivek Kumar" class="avatar-img">
         </div>
         <div class="avatar-tag">Open to Relocation · Remote</div>
         <div class="about-mv">
